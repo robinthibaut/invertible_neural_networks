@@ -3,6 +3,7 @@ Flow based models
 
 2020-11-18 first created
 """
+from abc import ABC
 
 import tensorflow as tf
 
@@ -186,7 +187,7 @@ class TwoNVPCouplingLayers(tfkl.Layer):
         return x[:, : dim // 2], x[:, dim // 2 :]
 
 
-class NVP(tfk.Model):
+class NVP(tfk.Model, ABC):
     def __init__(
         self,
         inp_dim,

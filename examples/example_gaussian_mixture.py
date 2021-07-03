@@ -171,7 +171,7 @@ class Trainer(tfk.Model, ABC):
 trainer = Trainer(
     model, x_dim, y_dim, z_dim, tot_dim, n_couple_layer, n_hid_layer, n_hid_dim
 )
-trainer.compile(optimizer="adam", loss="mse")
+trainer.compile(optimizer="adam")
 
 # Train the model
 
