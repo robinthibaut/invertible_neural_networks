@@ -196,6 +196,7 @@ ax.plot(hist.history["forward_loss"], "b.-", label="forward_loss")
 ax.plot(hist.history["latent_loss"], "g.-", label="latent_loss")
 ax.plot(hist.history["rev_loss"], "r.-", label="inverse_loss")
 plt.legend()
+plt.show()
 
 z = np.random.multivariate_normal([1.0] * z_dim, np.eye(z_dim), y_onehot.shape[0])
 y = np.concatenate([z, y_onehot], axis=-1).astype("float32")
@@ -211,3 +212,4 @@ for i, color in zip(idx2lab.keys(), lab2idx.keys()):
     ax2.set_xlim([-2, 2])
     ax2.set_ylim([-2, 2])
 plt.suptitle("Original (left)                    Prediction (right)", fontsize=20)
+plt.show()
