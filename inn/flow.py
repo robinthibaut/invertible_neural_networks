@@ -11,7 +11,14 @@ tfkl = tfk.layers
 tfkc = tfk.callbacks
 K = tfk.backend
 
-__all__ = ["NN", "NVP", "NVPCouplingLayer", "TwoNVPCouplingLayers", "MSE", "MMD_multiscale"]
+__all__ = [
+    "NN",
+    "NVP",
+    "NVPCouplingLayer",
+    "TwoNVPCouplingLayers",
+    "MSE",
+    "MMD_multiscale",
+]
 
 
 class NN(tfkl.Layer):
@@ -104,7 +111,7 @@ class NVPCouplingLayer(tfkl.Layer):
     def split(self, x):
         dim = self.inp_dim
         x = tf.reshape(x, [-1, dim])
-        return x[:, : dim // 2], x[:, dim // 2:]
+        return x[:, : dim // 2], x[:, dim // 2 :]
 
 
 class TwoNVPCouplingLayers(tfkl.Layer):
@@ -176,18 +183,18 @@ class TwoNVPCouplingLayers(tfkl.Layer):
     def split(self, x):
         dim = self.inp_dim
         x = tf.reshape(x, [-1, dim])
-        return x[:, : dim // 2], x[:, dim // 2:]
+        return x[:, : dim // 2], x[:, dim // 2 :]
 
 
 class NVP(tfk.Model):
     def __init__(
-            self,
-            inp_dim,
-            n_couple_layer,
-            n_hid_layer,
-            n_hid_dim,
-            name,
-            shuffle_type="reverse",
+        self,
+        inp_dim,
+        n_couple_layer,
+        n_hid_layer,
+        n_hid_dim,
+        name,
+        shuffle_type="reverse",
     ):
         super(NVP, self).__init__(name=name)
         self.inp_dim = inp_dim

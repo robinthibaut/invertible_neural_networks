@@ -12,7 +12,7 @@ import tensorflow as tf
 tfk = tf.keras
 tfkc = tfk.callbacks
 
-__all__ = ["NBatchLogger", "UpdateLossFactor"]
+__all__ = ["NBatchLogger", "UpdateLossFactor", "tfk", "tfkc"]
 
 
 class NBatchLogger(tfkc.Callback):
