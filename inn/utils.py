@@ -21,7 +21,14 @@ class NBatchLogger(tfkc.Callback):
     See: https://gist.github.com/jaekookang/7e2ca4dc2b1ab10dbb80b9e65ca91179
     """
 
-    def __init__(self, n_display, max_epoch, save_dir=None, suffix=None, silent=False):
+    def __init__(
+        self,
+        n_display: int,
+        max_epoch: int,
+        save_dir: str = None,
+        suffix: str = None,
+        silent=False,
+    ):
         super().__init__()
         self.epoch = 0
         self.display = n_display
@@ -39,14 +46,18 @@ class NBatchLogger(tfkc.Callback):
             self.fid = open(os.path.join(save_dir, fname), "w")
         self.t0 = time()
 
-    def on_train_begin(self, logs={}):
+    def on_train_begin(self, logs: dict = None):
+        if logs is None:
+            logs = {}
         logs = logs or self.logs
         txt = f"=== Started at {self.get_time()} ==="
         self.write_log(txt)
         if not self.silent:
             print(txt)
 
-    def on_epoch_end(self, epoch, logs={}):
+    def on_epoch_end(self, epoch: int, logs: dict = None):
+        if logs is None:
+            logs = {}
         self.epoch += 1
         fstr = " {} | Epoch: {:0{}d}/{:0{}d} | "
         precision = len(str(self.max_epoch))
@@ -70,7 +81,7 @@ class NBatchLogger(tfkc.Callback):
             self.write_log(txt)
         self.logs = logs
 
-    def on_train_end(self, logs=None):
+    def on_train_end(self, logs: dict = None):
         if logs is None:
             logs = {}
         logs = logs or self.logs
@@ -83,18 +94,20 @@ class NBatchLogger(tfkc.Callback):
     def get_time(self):
         return strftime("%Y-%m-%d %Hh:%Mm:%Ss", gmtime())
 
-    def write_log(self, txt):
+    def write_log(self, txt: str):
         if self.save_dir is not None:
             self.fid.write(txt + "\n")
             self.fid.flush()
 
 
 class UpdateLossFactor(tfkc.Callback):
-    def __init__(self, n_epochs):
+    def __init__(self, n_epochs: int):
         super(UpdateLossFactor, self).__init__()
         self.n_epochs = n_epochs
 
-    def on_epoch_end(self, epoch, logs={}):
+    def on_epoch_end(self, epoch: int, logs: dict = None):
+        if logs is None:
+            logs = {}
         self.model.loss_factor = min(
             1.0, 2.0 * 0.002 ** (1.0 - (float(epoch) / self.n_epochs))
         )

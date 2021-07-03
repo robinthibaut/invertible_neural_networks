@@ -74,9 +74,9 @@ x_data = tf.data.Dataset.from_tensor_slices(x_data)
 y_data = tf.data.Dataset.from_tensor_slices(y_data)
 dataset = (
     tf.data.Dataset.zip((x_data, y_data))
-        .shuffle(buffer_size=X.shape[0])
-        .batch(n_batch, drop_remainder=True)
-        .repeat()
+    .shuffle(buffer_size=X.shape[0])
+    .batch(n_batch, drop_remainder=True)
+    .repeat()
 )
 
 # Initialize the model
@@ -90,16 +90,16 @@ model.summary()
 
 class Trainer(tfk.Model, ABC):
     def __init__(
-            self,
-            model,
-            x_dim,
-            y_dim,
-            z_dim,
-            tot_dim,
-            n_couple_layer,
-            n_hid_layer,
-            n_hid_dim,
-            shuffle_type="reverse",
+        self,
+        model,
+        x_dim,
+        y_dim,
+        z_dim,
+        tot_dim,
+        n_couple_layer,
+        n_hid_layer,
+        n_hid_dim,
+        shuffle_type="reverse",
     ):
         super(Trainer, self).__init__()
         self.model = model
@@ -125,7 +125,7 @@ class Trainer(tfk.Model, ABC):
     def train_step(self, data):
         x_data, y_data = data
         # x = x_data[:, :self.x_dim]
-        y = y_data[:, -self.y_dim:]
+        y = y_data[:, -self.y_dim :]
         z = y_data[:, : self.z_dim]
         y_short = tf.concat([z, y], axis=-1)
 
@@ -133,10 +133,10 @@ class Trainer(tfk.Model, ABC):
         with tf.GradientTape() as tape:
             y_out = self.model(x_data)
             pred_loss = self.w1 * self.loss_fit(
-                y_data[:, self.z_dim:], y_out[:, self.z_dim:]
+                y_data[:, self.z_dim :], y_out[:, self.z_dim :]
             )  # [zeros, y] <=> [zeros, yhat]
             output_block_grad = tf.concat(
-                [y_out[:, : self.z_dim], y_out[:, -self.y_dim:]], axis=-1
+                [y_out[:, : self.z_dim], y_out[:, -self.y_dim :]], axis=-1
             )  # take out [z, y] only (not zeros)
             latent_loss = self.w2 * self.loss_latent(
                 y_short, output_block_grad

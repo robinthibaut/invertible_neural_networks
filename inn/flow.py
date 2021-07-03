@@ -27,7 +27,14 @@ class NN(tfkl.Layer):
     Reused from https://github.com/MokkeMeguru/glow-realnvp-tutorial
     """
 
-    def __init__(self, n_dim, n_layer=3, n_hid=512, activation="relu", name="fc_layer"):
+    def __init__(
+        self,
+        n_dim: int,
+        n_layer: int = 3,
+        n_hid: int = 512,
+        activation: str = "relu",
+        name: str = "fc_layer",
+    ):
         super(NN, self).__init__(name=name)
         self.n_dim = n_dim
         self.n_layer = n_layer
@@ -96,7 +103,7 @@ class NVPCouplingLayer(tfkl.Layer):
         x = self.shuffle(x, isInverse=True)
         return x
 
-    def shuffle(self, x, isInverse=False):
+    def shuffle(self, x, isInverse: bool = False):
         if not isInverse:
             # Forward
             idx = self.idx
@@ -116,7 +123,14 @@ class NVPCouplingLayer(tfkl.Layer):
 
 
 class TwoNVPCouplingLayers(tfkl.Layer):
-    def __init__(self, inp_dim, n_hid_layer, n_hid_dim, name, shuffle_type):
+    def __init__(
+        self,
+        inp_dim: int,
+        n_hid_layer: int,
+        n_hid_dim: int,
+        name: str,
+        shuffle_type: str,
+    ):
         super(TwoNVPCouplingLayers, self).__init__(name=name)
         """Implementation of Coupling layers in Ardizzone et al (2018)
 
@@ -168,7 +182,7 @@ class TwoNVPCouplingLayers(tfkl.Layer):
         x = self.shuffle(x, isInverse=True)
         return x
 
-    def shuffle(self, x, isInverse=False):
+    def shuffle(self, x, isInverse: bool = False):
         if not isInverse:
             # Forward
             idx = self.idx
@@ -190,12 +204,12 @@ class TwoNVPCouplingLayers(tfkl.Layer):
 class NVP(tfk.Model, ABC):
     def __init__(
         self,
-        inp_dim,
-        n_couple_layer,
-        n_hid_layer,
-        n_hid_dim,
-        name,
-        shuffle_type="reverse",
+        inp_dim: int,
+        n_couple_layer: int,
+        n_hid_layer: int,
+        n_hid_dim: int,
+        name: str,
+        shuffle_type: str = "reverse",
     ):
         super(NVP, self).__init__(name=name)
         self.inp_dim = inp_dim
